@@ -23,9 +23,9 @@ const Performance = () => {
                     ease: "power1.out",
                     scrollTrigger: {
                         trigger: ".content p",
-                        start: "top bottom",
-                        end: "top center",
-                        scrub: true,
+                        start: "top 80%",
+                        end: "top 50%",
+                        scrub: 0.6,
                         invalidateOnRefresh: true,
                     },
                 }
@@ -40,7 +40,7 @@ const Performance = () => {
                     trigger: sectionEl,
                     start: "top bottom",
                     end: "bottom top",
-                    scrub: 1,
+                    scrub: 0.5,
                     invalidateOnRefresh: true,
                 },
             });
@@ -56,7 +56,10 @@ const Performance = () => {
                 if (typeof item.right === "number") vars.right = `${item.right}%`;
                 if (typeof item.bottom === "number") vars.bottom = `${item.bottom}%`;
 
-                if (item.transform) vars.transform = item.transform;
+                // Only add transform if it exists and is valid
+                if (item.transform && item.transform !== undefined) {
+                    vars.transform = item.transform;
+                }
 
                 tl.to(selector, vars, 0);
             });

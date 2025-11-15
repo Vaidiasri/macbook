@@ -15,8 +15,10 @@ const ModelScroll = () => {
     const isMobile = useMediaQuery({ query: '(max-width: 1024px)'})
     const { setTexture } = useMacbookStore();
 
-    // Pre-load all feature videos during component mount
+    // Pre-load all feature videos during component mount with cleanup
     useEffect(() => {
+        const videos = [];
+        
         featureSequence.forEach((feature) => {
             const v = document.createElement('video');
 
@@ -29,7 +31,16 @@ const ModelScroll = () => {
             });
 
             v.load();
-        })
+            videos.push(v);
+        });
+
+        // Cleanup: pause and remove video references on unmount
+        return () => {
+            videos.forEach((video) => {
+                video.pause();
+                video.src = '';
+            });
+        };
     }, []);
 
     useGSAP(() => {
@@ -37,10 +48,10 @@ const ModelScroll = () => {
         const modelTimeline = gsap.timeline({
             scrollTrigger: {
                 trigger: '#f-canvas',
-                start: 'top top',
-                end: 'bottom  top',
-                scrub: 1,
-                pin: true,
+                start: 'top 30%',
+                end: 'bottom 30%',
+                scrub: 0.8,
+                invalidateOnRefresh: true,
             }
         });
 
@@ -49,8 +60,9 @@ const ModelScroll = () => {
             scrollTrigger: {
                 trigger: '#f-canvas',
                 start: 'top center',
-                end: 'bottom  top',
-                scrub: 1,
+                end: 'bottom center',
+                scrub: 0.8,
+                invalidateOnRefresh: true,
             }
         })
 
@@ -62,7 +74,7 @@ const ModelScroll = () => {
         // Content & Texture Sync
         timeline
             .call(() => setTexture('/videos/feature-1.mp4'))
-            .to('.box1', { opacity: 1, y: 0, delay: 1 })
+            .to('.box1', { opacity: 1, y: 0, delay: 0.3 })
 
             .call(() => setTexture('/videos/feature-2.mp4'))
             .to('.box2', { opacity: 1, y: 0 })
@@ -75,6 +87,11 @@ const ModelScroll = () => {
 
             .call(() => setTexture('/videos/feature-5.mp4'))
             .to('.box5', { opacity: 1, y: 0 })
+
+        return () => {
+            modelTimeline.kill();
+            timeline.kill();
+        };
     }, []);
 
     return (

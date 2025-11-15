@@ -9,13 +9,14 @@ const Highlights = () => {
         gsap.to(['.left-column', '.right-column'], {
             scrollTrigger: {
                 trigger: '#highlights',
-                start: isMobile ? 'bottom bottom' : 'top center'
+                start: isMobile ? 'top center' : 'top center',
+                invalidateOnRefresh: true,
             },
             y: 0,
             opacity: 1,
-            stagger: 0.5,
-            duration: 1,
-            ease: 'power1.inOut'
+            stagger: 0.3,
+            duration: 0.8,
+            ease: 'power2.out'
         });
     })
 

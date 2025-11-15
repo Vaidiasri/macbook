@@ -10,17 +10,18 @@ const Showcase = () => {
             const timeline = gsap.timeline({
                 scrollTrigger: {
                     trigger: '#showcase',
-                    start: 'top top',
-                    end: 'bottom top',
-                    scrub: true,
-                    pin: true,
+                    start: 'top 20%',
+                    end: 'bottom 20%',
+                    scrub: 0.8,
+                    invalidateOnRefresh: true,
                 }
             });
 
             timeline
                 .to('.mask img', {
-                    transform: 'scale(1.1)'
-                }).to('.content', { opacity: 1, y: 0, ease: 'power1.in' });
+                    transform: 'scale(1.1)',
+                    ease: 'power1.inOut'
+                }).to('.content', { opacity: 1, y: 0, ease: 'power1.in' }, 0);
         }
     }, [isTablet])
 

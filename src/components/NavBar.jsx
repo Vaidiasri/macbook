@@ -1,6 +1,14 @@
 import {navLinks} from "../constants";
 
 const NavBar = () => {
+    const handleNavClick = (label) => {
+        const sectionId = `#${label.toLowerCase()}`;
+        const element = document.querySelector(sectionId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
         <header>
             <nav>
@@ -9,7 +17,7 @@ const NavBar = () => {
                 <ul>
                     {navLinks.map(({ label }) => (
                         <li key={label}>
-                            <a href={label}>{label}</a>
+                            <a href={`#${label.toLowerCase()}`} onClick={(e) => { e.preventDefault(); handleNavClick(label); }}>{label}</a>
                         </li>
                     ))}
                 </ul>

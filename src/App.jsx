@@ -8,10 +8,18 @@ import Performance from "./components/Performance.jsx";
 import Features from "./components/Features.jsx";
 import Highlights from "./components/Highlights.jsx";
 import Footer from "./components/Footer.jsx";
+import { useEffect } from "react";
 
 gsap.registerPlugin(ScrollTrigger)
 
 const App = () => {
+    useEffect(() => {
+        // Cleanup ScrollTrigger on component unmount
+        return () => {
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        };
+    }, []);
+
     return (
         <main>
             <NavBar />
